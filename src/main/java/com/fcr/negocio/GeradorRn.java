@@ -16,7 +16,7 @@ public class GeradorRn {
 
 		result = createResourceMethod(packageName, serviceName, resourceParams, className, methodName)
 				+ createXmlJsonTo(className, xmlFields, jsonFields) + createMainJsonTo(className)
-				+ createMethodRn(className, methodName) + createMainXmlTo(className)
+				+ createMethodRn(packageName, className, methodName) + createMainXmlTo(className)
 				+ createDaoMethod(serviceName, className, methodName);
 
 		return result;
@@ -83,16 +83,16 @@ public class GeradorRn {
 		sb.append(System.lineSeparator());
 		sb.append("@Path(\"/" + serviceName + "\")");
 		sb.append(System.lineSeparator());
-		sb.append("@PApiOperation(\"Descrição\")");
+		sb.append("@ApiOperation(\"Descrição\")");
 		sb.append(System.lineSeparator());
-		sb.append("@ApiOperation({ @ApiResponse(code = 200, message = \"OK\", response = " + className
+		sb.append("@ApiResponses({ @ApiResponse(code = 200, message = \"OK\", response = " + className
 				+ "MainJsonTo.class),");
 		sb.append(System.lineSeparator());
-		sb.append("@ApiResponse(code 401, message = \"UNAUTHORIZED\", response = HttpResponseTo.class),");
+		sb.append("@ApiResponse(code = 401, message = \"UNAUTHORIZED\", response = HttpResponseTo.class),");
 		sb.append(System.lineSeparator());
-		sb.append("@ApiResponse(code 400, message = \"BAD REQUEST\", response = HttpResponseTo.class),");
+		sb.append("@ApiResponse(code = 400, message = \"BAD REQUEST\", response = HttpResponseTo.class),");
 		sb.append(System.lineSeparator());
-		sb.append("@ApiResponse(code 500, message = \"INTERNAL SERVER ERROR\", response = HttpResponseTo.class),");
+		sb.append("@ApiResponse(code = 500, message = \"INTERNAL SERVER ERROR\", response = HttpResponseTo.class) })");
 		sb.append(System.lineSeparator());
 		if (resourceParams != null && resourceParams.length > 0) {
 			sb.append("public Response " + methodName + "(");
@@ -220,7 +220,7 @@ public class GeradorRn {
 		return sb.toString();
 	}
 
-	private String createMethodRn(String className, String methodName) {
+	private String createMethodRn(String packageName, String className, String methodName) {
 		sb = new StringBuilder();
 
 		sb.append("public " + className + "MainJsonTo " + methodName + "(" + className + "XmlJsonTo param) {");
@@ -229,7 +229,7 @@ public class GeradorRn {
 		sb.append(System.lineSeparator());
 		sb.append("new " + className + "MainXmlTo." + className + "ListXmlTo(param));");
 		sb.append(System.lineSeparator());
-		sb.append("return laminadorDao." + methodName + "(main);");
+		sb.append("return "+packageName+"Dao." + methodName + "(main);");
 		sb.append(System.lineSeparator());
 		sb.append("}");
 
@@ -352,7 +352,7 @@ public class GeradorRn {
 		sb.append(System.lineSeparator());
 		sb.append("PlSqlXmlConfig procedure = retornaProcedureExecutada(contextMain, packageName, servico, filtro);");
 		sb.append(System.lineSeparator());
-		sb.append(className+"MainXmlTo main = jaxExecutor.unmarshal(procedure.getRetornoClob(PR_XML_SAIDA), contextMain);");
+		sb.append(className+"MainXmlTo main = jaxbExecutor.unmarshal(procedure.getRetornoClob(PR_XML_SAIDA), contextMain);");
 		sb.append(System.lineSeparator());
 		sb.append("if (main == null)");
 		sb.append(System.lineSeparator());
@@ -364,11 +364,11 @@ public class GeradorRn {
 		sb.append(System.lineSeparator());
 		sb.append("if (main.getList() != null) {");
 		sb.append(System.lineSeparator());
-		sb.append("collecton = modelMapper.map(main.getList().getObjetos(), TYPE_"+getXmlPatternFromCammelCase(className).toUpperCase()+");");
+		sb.append("collection = modelMapper.map(main.getList().getObjetos(), TYPE_"+getXmlPatternFromCammelCase(className).toUpperCase()+");");
 		sb.append(System.lineSeparator());
 		sb.append("}");
 		sb.append(System.lineSeparator());
-		sb.append("return new "+className+"MainJsonTo (collection, modelMapper.map(main.getMensagens(), TYPE_MENSAGENS));");
+		sb.append("return new "+className+"MainJsonTo (collection, modelMapper.map(main.getMensagens(), TYPE_MENSAGEM));");
 		sb.append(System.lineSeparator());
 		sb.append("} catch (Exception e) {");
 		sb.append(System.lineSeparator());
