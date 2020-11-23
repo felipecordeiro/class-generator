@@ -13,14 +13,16 @@ import com.fcr.negocio.GeradorRn;
 @RequestScoped
 @Path("/gerador")
 public class GeradorResource {
-    
-    GeradorRn geradorRn = new GeradorRn();
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String obtemDados(@QueryParam("className") String className, 
-    @QueryParam("fields") String fields) {
-        
-        return geradorRn.transform(className, fields);
-    }
+	GeradorRn geradorRn = new GeradorRn();
+
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String obtemDados(@QueryParam("packageName") String packageName,
+			@QueryParam("serviceName") String serviceName,
+			@QueryParam("serviceParams") String serviceParams, @QueryParam("className") String className,
+			@QueryParam("classFieldNames") String classFieldNames) {
+
+		return geradorRn.transform(packageName, serviceName, serviceParams, className, classFieldNames);
+	}
 }
