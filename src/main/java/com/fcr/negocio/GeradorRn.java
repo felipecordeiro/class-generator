@@ -11,6 +11,9 @@ public class GeradorRn {
 			resourceParams = getCammelCasePatternFromArray(serviceParams.toLowerCase().split(","));
 		}
 		String[] xmlFields = stringFields.toLowerCase().split(",");
+		for (int i=0; i < xmlFields.length; i++){
+			xmlFields[i] = xmlFields[i].trim();
+		}
 		String[] jsonFields = getCammelCasePatternFromArray(xmlFields);
 		String result = "";
 
