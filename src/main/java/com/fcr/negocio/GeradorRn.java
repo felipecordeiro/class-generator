@@ -18,8 +18,11 @@ public class GeradorRn {
 		String result = "";
 
 		result = createResourceMethod(packageName, serviceName, resourceParams, className, methodName)
-				+ createXmlJsonTo(className, xmlFields, jsonFields) + createMainJsonTo(className)
-				+ createMethodRn(packageName, className, methodName) + createMainXmlTo(className)
+				+ createXmlJsonTo(className, xmlFields, jsonFields) 
+				+ createModelFrontEndIonic(className, xmlFields, jsonFields)
+				+ createMainJsonTo(className)
+				+ createMethodRn(packageName, className, methodName) 
+				+ createMainXmlTo(className)
 				+ createDaoMethod(serviceName, className, methodName);
 
 		return result;
@@ -381,6 +384,28 @@ public class GeradorRn {
 		sb.append(System.lineSeparator());
 		sb.append("}");
 		
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+
+		return sb.toString();
+	}
+
+	private String createModelFrontEndIonic(String className, String[] xmlFields, String[] jsonFields) {
+		sb = new StringBuilder();
+		sb.append("export class " + className + " {");
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		for (int i = 0; i < jsonFields.length; i++) {
+			sb.append(jsonFields[i] + ": string");
+			sb.append(System.lineSeparator());
+		}
+		sb.append(System.lineSeparator());
+		sb.append("}");
+
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
 		return sb.toString();
 	}
 }
