@@ -1,6 +1,7 @@
 package com.fcr.negocio;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import org.jboss.logging.Logger;
@@ -31,7 +32,7 @@ public class GeradorRn {
 				+ createMethodRn(packageName, className, methodName) 
 				+ createMainXmlTo(className)
 				+ createDaoMethod(serviceName, className, methodName);
-		logger.info("Requisitado às "+DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
+		logger.info("Requisitado às "+DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo"))));
 		return result;
 	}
 
