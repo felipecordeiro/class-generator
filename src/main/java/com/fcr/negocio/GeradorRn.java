@@ -1,7 +1,14 @@
 package com.fcr.negocio;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.jboss.logging.Logger;
+
 public class GeradorRn {
-	StringBuilder sb;
+
+	private StringBuilder sb;
+	private Logger logger = Logger.getLogger(GeradorRn.class.getName());
 
 	public String transform(String packageName, String serviceName, String serviceParams, String className,
 			String stringFields) {
@@ -24,7 +31,7 @@ public class GeradorRn {
 				+ createMethodRn(packageName, className, methodName) 
 				+ createMainXmlTo(className)
 				+ createDaoMethod(serviceName, className, methodName);
-
+		logger.info("Requisitado às "+DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
 		return result;
 	}
 
