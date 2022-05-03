@@ -26,8 +26,9 @@ public class GeradorRn {
 		String result = "";
 
 		result = createResourceMethod(packageName, serviceName, resourceParams, className, methodName)
-				+ createXmlJsonTo(className, xmlFields, jsonFields) 
+				+ createTo(className, jsonFields) 
 				+ createModelFrontEndIonic(className, jsonFields)
+				+ createXmlJsonTo(className, xmlFields, jsonFields) 
 				+ createMainJsonTo(className)
 				+ createMethodRn(packageName, className, methodName) 
 				+ createMainXmlTo(className)
@@ -416,4 +417,23 @@ public class GeradorRn {
 		sb.append(System.lineSeparator());
 		return sb.toString();
 	}
+
+	private String createTo(String className, String[] jsonFields) {
+		sb = new StringBuilder();
+		sb.append("public class " + className + "To {");
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		for (int i = 0; i < jsonFields.length; i++) {
+			sb.append("private String " + jsonFields[i] + ";");
+			sb.append(System.lineSeparator());
+		}
+		sb.append(System.lineSeparator());
+		sb.append("}");
+
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		sb.append(System.lineSeparator());
+		return sb.toString();
+	}
+
 }
