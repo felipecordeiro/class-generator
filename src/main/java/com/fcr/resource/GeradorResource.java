@@ -23,6 +23,15 @@ public class GeradorResource {
 			@QueryParam("serviceParams") String serviceParams, @QueryParam("className") String className,
 			@QueryParam("classFieldNames") String classFieldNames) {
 
-		return geradorRn.transform(packageName, serviceName, serviceParams, className, classFieldNames);
+		return geradorRn.obtemDados(packageName, serviceName, serviceParams, className, classFieldNames);
+	}
+
+	@GET
+	@Path("/java-ts")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String obtemModeloJavaTs(@QueryParam("className") String className, 
+			@QueryParam("classFieldNames") String classFieldNames) {
+
+		return geradorRn.obtemModeloJavaTs(className, classFieldNames);
 	}
 }

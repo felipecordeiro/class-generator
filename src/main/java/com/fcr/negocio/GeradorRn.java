@@ -11,7 +11,7 @@ public class GeradorRn {
 	private StringBuilder sb;
 	private Logger logger = Logger.getLogger(GeradorRn.class.getName());
 
-	public String transform(String packageName, String serviceName, String serviceParams, String className,
+	public String obtemDados(String packageName, String serviceName, String serviceParams, String className,
 			String stringFields) {
 		String methodName = getMethodName(serviceName);
 		String[] resourceParams = null;
@@ -33,6 +33,18 @@ public class GeradorRn {
 				+ createMethodRn(packageName, className, methodName) 
 				+ createMainXmlTo(className)
 				+ createDaoMethod(serviceName, className, methodName);
+		logger.info("Requisitado às "+DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo"))));
+		return result;
+	}
+
+	public String obtemModeloJavaTs(String className, String stringFields){
+		String[] xmlFields = stringFields.toLowerCase().split(",");
+		for (int i=0; i < xmlFields.length; i++){
+			xmlFields[i] = xmlFields[i].trim();
+		}
+		String[] jsonFields = getCammelCasePatternFromArray(xmlFields);
+		String result = "";
+		result = createTo(className, jsonFields) + createModelFrontEndIonic(className, jsonFields);
 		logger.info("Requisitado às "+DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo"))));
 		return result;
 	}
